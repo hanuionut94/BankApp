@@ -9,12 +9,13 @@ class DBUsersRepository:
         self.session = sessionmaker(bind=self.engine)()
 
     #Create new user
-    def add_user(self, user_id, first_name, last_name, email_name, phone_number, date_of_birth, join_date):
+    def add_user(self, user_id, first_name, last_name, email_name, phone_number, address, date_of_birth, join_date):
         new_user = Users(
             user_id=user_id,
             first_name=first_name,
             last_name=last_name,
             email_name=email_name,
+            address=address,
             phone_number=phone_number,
             date_of_birth=date_of_birth,
             join_date=join_date
@@ -61,11 +62,8 @@ class DBUsersRepository:
 
     #Delete user
     def delete_user(self, user_id):
-        # return self.session.query(Users).filter_by(user_id=user_id).delete()
         with self.engine.connect() as conn:
-            query = conn.execute(text(f'DELETE FROM users WHERE user_id = "{user_id}"'))
-
-        return query
+            conn.execute(text(f'DELETE FROM users WHERE user_id = "{user_id}"'))
 
 
 if __name__ == '__main__':
