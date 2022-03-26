@@ -3,53 +3,50 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 
 
-
 class DBUsersDepositsRepository():
     def __init__(self):
         self.engine = create_engine('mysql+pymysql://root@localhost:3306/BankApp')
         self.session = sessionmaker(bind=self.engine)()
 
-    #CREATE Deposits
-    def add_deposit(self,user_id, currency, name, amount, description):
+    # CREATE Deposits
+    def add_deposit(self, user_id, currency, name, amount, description):
         new_deposit = UsersDeposits(
-            user_id = user_id,
-            currency = currency,
-            name = name,
-            amount = amount,
-            description = description
+            user_id=user_id,
+            currency=currency,
+            name=name,
+            amount=amount,
+            description=description
         )
 
         self.session.add(new_deposit)
         self.session.commit()
 
-    #READ
+    # READ
     def get_deposit(self, user_id):
-
         with self.engine.connect() as conn:
             query = conn.execute(text(f'SELECT * FROM usersdeposits WHERE user_id = "{user_id}"'))
             result = query.fetchall()[0]
 
             user = UsersDeposits(
-                user_id = user_id,
-                currency = result[1],
-                name = result[2],
-                amount = result[3],
-                description = result[4]
+                user_id=user_id,
+                currency=result[1],
+                name=result[2],
+                amount=result[3],
+                description=result[4]
             )
 
             return user
 
-    #UPDATE
+    # UPDATE
     def update_deposit(self, user_id, **kwargs):
-        # TODO: currency exachange
-        with self.engine.connect() as conn:
-            # conn.execute(text(f'UPDATE usersdeposits SET name = "{name}", amount = "{amount}", description = "{description}" WHERE user_id = "{user_id}"'))
-            conn.execute(text(f'UPDATE usersdeposits SET name = "{kwargs}" WHERE user_id = "{user_id}"'))
+        self.session.query(UsersDeposits).filter_by(user_id=user_id).update(kwargs)
+        self.session.commit()
 
-    #DELETE
+    # DELETE
     def delete_deposit(self, user_id):
         with self.engine.connect() as conn:
             conn.execute(text(f'DELETE FROM usersdeposits WHERE user_id = "{user_id}"'))
+
 
 if __name__ == '__main__':
     repo = DBUsersDepositsRepository()
@@ -72,6 +69,6 @@ if __name__ == '__main__':
     #
     # print(repo.get_deposit(413))
     #
-    repo.update_deposit(123, name='depozit2', description='al 2 lea depozit')
+    repo.update_deposit(123, name='depozit3', description='al 3 lea depozit')
 
     # repo.delete_deposit(413)

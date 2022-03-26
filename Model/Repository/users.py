@@ -1,6 +1,7 @@
 from Model.Domain.users import Users
-from sqlalchemy import create_engine,text
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
+from datetime import datetime
 
 
 class DBUsersRepository:
@@ -26,23 +27,7 @@ class DBUsersRepository:
 
     #Read
     def get_user(self, user_id):
-        # return self.session.query(Users).filter_by(user_id=user_id).first()
-
-        with self.engine.connect() as conn:
-            query = conn.execute(text(f'SELECT * FROM users WHERE user_id = "{user_id}"'))
-            res = query.fetchall()[0]
-
-            users = Users(
-                user_id=user_id,
-                first_name=res[1],
-                last_name=res[2],
-                email_name=res[3],
-                address = [4],
-                phone_number=res[5],
-                date_of_birth = res[6],
-                join_date = res[7]
-            )
-            return users
+        return self.session.query(Users).filter_by(user_id=user_id).first()
 
      #Read all
     def get_all_users(self):
@@ -50,15 +35,7 @@ class DBUsersRepository:
 
     #Read email
     def get_email(self, user_id):
-       # return self.session.query(Users).filter_by(user_id=user_id).first()
-
-        with self.engine.connect() as conn:
-            query = conn.execute(text(f'SELECT email_name FROM users WHERE user_id = "{user_id}"'))
-
-        res = query.fetchall()[0][0]
-        return res
-
-
+       return self.session.query(Users).filter_by(user_id=user_id).first()
 
     #Delete user
     def delete_user(self, user_id):
@@ -69,3 +46,13 @@ class DBUsersRepository:
 if __name__ == '__main__':
     user_repo = DBUsersRepository()
 
+    user_repo.add_user(
+        user_id='1234567890123',
+        first_name='Hanu',
+        last_name='Ionut',
+        email_name='i_hanu',
+        address='adresa',
+        phone_number=757271432,
+        date_of_birth='2000-22-10',
+        join_date = datetime.now()
+    )
