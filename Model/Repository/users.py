@@ -1,11 +1,12 @@
 from Model.Domain.users import Users
-from sqlalchemy import create_engine,text
+from sqlalchemy import text
 from sqlalchemy.orm import sessionmaker
 
+from Utils.utils import Base, engine
 
 class DBUsersRepository:
     def __init__(self):
-        self.engine = create_engine('mysql+pymysql://root@localhost:3306/BankApp')
+        self.e
         self.session = sessionmaker(bind=self.engine)()
 
     #Create new user
