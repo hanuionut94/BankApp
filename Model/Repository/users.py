@@ -1,13 +1,14 @@
 from Model.Domain.users import Users
-from sqlalchemy import create_engine, text
+from sqlalchemy import text
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
+
+from Utils.utils import Base, engine
 
 
 class DBUsersRepository:
     def __init__(self):
-        self.engine = create_engine('mysql+pymysql://root@localhost:3306/BankApp')
-        self.session = sessionmaker(bind=self.engine)()
+        self.session = sessionmaker(engine)()
 
     #Create new user
     def add_user(self, user_id, first_name, last_name, email_name, phone_number, address, date_of_birth, join_date):
@@ -44,6 +45,7 @@ class DBUsersRepository:
 
 
 if __name__ == '__main__':
+    Base.metadata.create_all(engine)
     user_repo = DBUsersRepository()
 
     user_repo.add_user(
