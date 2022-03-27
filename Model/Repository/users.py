@@ -10,7 +10,7 @@ class DBUsersRepository:
     def __init__(self):
         self.session = sessionmaker(engine)()
 
-    #Create new user
+    # Create new user
     def add_user(self, user_id, first_name, last_name, email_name, phone_number, address, date_of_birth, join_date):
         new_user = Users(
             user_id=user_id,
@@ -26,22 +26,22 @@ class DBUsersRepository:
         self.session.add(new_user)
         self.session.commit()
 
-    #Read
+    # Read
     def get_user(self, user_id):
         return self.session.query(Users).filter_by(user_id=user_id).first()
 
-     #Read all
+    # Read all
     def get_all_users(self):
         return self.session.query(Users).all()
 
-    #Read email
+    # Read email
     def get_email(self, user_id):
-       return self.session.query(Users).filter_by(user_id=user_id).first()
+        return self.session.query(Users).filter_by(user_id=user_id).first()
 
-    #Delete user
+    # Delete user
     def delete_user(self, user_id):
-        with self.engine.connect() as conn:
-            conn.execute(text(f'DELETE FROM users WHERE user_id = "{user_id}"'))
+        self.session.query(Users).filter_by(user_id=user_id).delete()
+        self.session.commit()
 
 
 if __name__ == '__main__':
@@ -56,5 +56,5 @@ if __name__ == '__main__':
         address='adresa',
         phone_number=757271432,
         date_of_birth='2000-22-10',
-        join_date = datetime.now()
+        join_date=datetime.now()
     )
