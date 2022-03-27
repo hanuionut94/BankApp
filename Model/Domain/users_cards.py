@@ -1,10 +1,10 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.types import DateTime
 
 from Utils.utils import Base
 
-class UserCards(Base):
 
+class UserCards(Base):
     __tablename__ = 'usercards'
 
     user_id = Column(String(13), foreign_key=ForeignKey('users.user_id', ondelete='CASCADE'))

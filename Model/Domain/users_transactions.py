@@ -11,7 +11,7 @@ class UsersTransactions(Base):
 
     transactions_id = Column(Integer, primary_key=True)
     user_id = Column(String(13), foreign_key=ForeignKey('users.user_id', ondelete='CASCADE'))
-    currency = Column(String(3), foreign_key=ForeignKey) #TODO -- de completat
+    currency = Column(String(3), foreign_key=ForeignKey('currencies.currencies', ondelete='CASCADE'))
     amount = Column(Float(2), nullable=False)
     vendor = Column(String(100), nullable=False)
     date_time = Column(DateTime, nullable=False)
