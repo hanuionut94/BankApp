@@ -1,12 +1,10 @@
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import Column, String
 from sqlalchemy.types import DateTime
 
-Base = declarative_base()
+from Utils.utils import Base
 
 
 class Users(Base):
-
     __tablename__ = 'users'
 
     user_id = Column(String(13), primary_key=True)
@@ -26,4 +24,3 @@ class Users(Base):
                f'phone = {self.phone_number}\n' \
                f'date of birth = {self.date_of_birth}\n' \
                f'join date = {self.join_date}'
-

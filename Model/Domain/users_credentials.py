@@ -3,8 +3,8 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base
 
-class UsersCredentials(Base):
 
+class UsersCredentials(Base):
     __tablename__ = 'userscredentials'
 
     user_id = Column(String(13), primary_key=True, foreign_key=ForeignKey('users.user_id', ondelete='CASCADE'))

@@ -1,5 +1,4 @@
 from Model.Domain.users import Users
-from sqlalchemy import text
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 
