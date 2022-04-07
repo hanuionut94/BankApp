@@ -22,9 +22,9 @@ class DBUsersCredentialsRepository:
     # READ
     def get_credentials(self, user_id):
         return self.session.query(UsersCredentials).filter_by(
-            user_id=user_id).first()  # TODO - exclud user_password_hash from output
+            user_id=user_id).first()
 
     # UPDATE
     def update_password(self, user_id, user_password_hash):
-        self.session.query(UsersCredentials).filter_by(user_id=user_id).update(
-            {'user_password_hash': user_password_hash})
+        self.session.query(UsersCredentials).filter_by(user_id=user_id).update({'user_password_hash': user_password_hash})
+        self.session.commit()

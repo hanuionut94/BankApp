@@ -47,13 +47,15 @@ if __name__ == '__main__':
     Base.metadata.create_all(engine)
     user_repo = DBUsersRepository()
 
-    user_repo.add_user(
-        user_id='1234567890123',
-        first_name='Hanu',
-        last_name='Ionut',
-        email_name='i_hanu',
-        address='adresa',
-        phone_number=757271432,
-        date_of_birth='2000-22-10',
-        join_date=datetime.now()
-    )
+    # user_repo.add_user(
+    #     user_id='1234567890123',
+    #     first_name='Hanu',
+    #     last_name='Ionut',
+    #     email_name='i_hanu',
+    #     address='adresa',
+    #     phone_number=757271432,
+    #     date_of_birth='2000-02-10',
+    #     join_date=datetime.today()
+    # )
+
+    print(user_repo.get_user(1234567890123))

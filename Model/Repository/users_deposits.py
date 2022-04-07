@@ -1,12 +1,12 @@
 from Model.Domain.users_deposits import UsersDeposits
-from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 
+from Utils.utils import Base, engine
 
-class DBUsersDepositsRepository():
+
+class DBUsersDepositsRepository:
     def __init__(self):
-        self.engine = create_engine('mysql+pymysql://root@localhost:3306/BankApp')
-        self.session = sessionmaker(bind=self.engine)()
+        self.session = sessionmaker(engine)()
 
     # CREATE Deposits
     def add_deposit(self, user_id, currency, name, amount, description):
@@ -22,37 +22,40 @@ class DBUsersDepositsRepository():
         self.session.commit()
 
     # READ
-    def get_deposit(self, user_id):
-        with self.engine.connect() as conn:
-            query = conn.execute(text(f'SELECT * FROM usersdeposits WHERE user_id = "{user_id}"'))
-            result = query.fetchall()[0]
+    def get_deposit_by_currency(self, user_id, currency):
+        return self.session.query(UsersDeposits).filter_by(user_id=user_id, currency=currency).first()
 
-            user = UsersDeposits(
-                user_id=user_id,
-                currency=result[1],
-                name=result[2],
-                amount=result[3],
-                description=result[4]
-            )
+    #READ WITH NAME
+    def get_deposit_by_name(self, user_id, name):
+        return self.session.query(UsersDeposits).filter_by(user_id=user_id, name=name).first()
 
-            return user
+    def get_deposit_currency_name(self, user_id, currency, name):
+        return self.session.query(UsersDeposits).filter_by(user_id=user_id, currency=currency, name=name).first()
 
-    # UPDATE
-    def update_deposit(self, user_id, **kwargs):
-        self.session.query(UsersDeposits).filter_by(user_id=user_id).update(kwargs)
-        self.session.commit()
+    # READ ALL
+    def get_all_deposits(self, user_id):
+        return self.session.query(UsersDeposits).filter_by(user_id=user_id).all()
+
+
+    #UPDATE
+    def update_deposit(self, user_id, currency, name, amount):
+        if amount:
+            self.session.query(UsersDeposits).filter_by(user_id=user_id, currency=currency, name=name).update({'amount':amount})
+            self.session.commit()
+
 
     # DELETE
     def delete_deposit(self, user_id):
-        with self.engine.connect() as conn:
-            conn.execute(text(f'DELETE FROM usersdeposits WHERE user_id = "{user_id}"'))
+        self.session.query(UsersDeposits).filter_by(user_id=user_id).delete()
+        self.session.commit()
 
 
 if __name__ == '__main__':
+    Base.metadata.create_all(engine)
     repo = DBUsersDepositsRepository()
 
     # repo.add_deposit(
-    #     user_id=413,
+    #     user_id=1234,
     #     currency='dol',
     #     name='depozit2',
     #     amount=14423.45,
@@ -60,15 +63,15 @@ if __name__ == '__main__':
     # )
     #
     # repo.add_deposit(
-    #     user_id=112,
+    #     user_id=123,
     #     currency='eur',
     #     name='depozit1',
     #     amount=423.45,
     #     description='primul depozit'
     # )
-    #
-    # print(repo.get_deposit(413))
-    #
-    repo.update_deposit(123, name='depozit3', description='al 3 lea depozit')
 
-    # repo.delete_deposit(413)
+    print(repo.get_deposit('123'))
+
+    repo.update_deposit(123, name='depozit3', description='al 3 lea depozit')
+    #
+    repo.delete_deposit('1234')

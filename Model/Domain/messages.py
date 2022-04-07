@@ -9,7 +9,7 @@ class Messages(Base):
     __tablename__ = 'messages'
 
     id = Column(Integer, primary_key=True)
-    user_id = Column(String(13), foreign_key=ForeignKey('users.users_id', ondelete='CASCADE'))
+    user_id = Column(String(13), ForeignKey('users.users_id', ondelete='CASCADE'))
     message = Column(String, nullable=False)
     date = Column(datetime, nullable=False)
     state = Column(Boolean, nullable=False)
