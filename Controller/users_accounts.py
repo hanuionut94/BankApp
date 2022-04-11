@@ -7,7 +7,7 @@ class UsersAccountsController:
 
     def check_balance(self, user_id, amount, currency):
         users_accounts = self.users_accounts_repo.get_account(user_id, currency)
-        if users_accounts and self.users_accounts_repo.get_account(user_id, currency).amount > amount:
+        if users_accounts and users_accounts.amount > amount: #self.users_accounts_repo.get_account(user_id, currency).amount > amount:
             return True
         return False
 
@@ -18,6 +18,10 @@ class UsersAccountsController:
     def remove_amount(self, user_id, amount, currency):
         total_amount = self.users_accounts_repo.get_account(user_id, currency).amount
         self.users_accounts_repo.update_account(user_id, currency, total_amount - amount)
+
+    def update_amount(self, user_id, currency, amount):
+        total_amount = self.users_accounts_repo.get_account(user_id, currency).amount
+        self.users_accounts_repo.update_account(user_id, currency, total_amount + amount)
 
     def check_currency(self, user_id, currency):
         if self.users_accounts_repo.get_account(user_id, currency):
@@ -31,6 +35,9 @@ class UsersAccountsController:
     def create_account(self, user_id, currency):
         amount = 0
         self.users_accounts_repo.create_account(user_id, currency, amount)
+
+    def get_user_accounts(self, user_id):
+        return self.users_accounts_repo.get_all_accounts(user_id)
 
 if __name__ == '__main__':
     users_accounts_repo = DBUsersAccountsRepository()

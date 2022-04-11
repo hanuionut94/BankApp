@@ -8,7 +8,7 @@ from Utils.utils import Base
 class UsersCards(Base):
     __tablename__ = 'userscards'
 
-    user_id = Column(String(13), ForeignKey("users.user_id"))
+    user_id = Column(String(13)) # ForeignKey("users.user_id"))
     card_number = Column(String(16),primary_key=True)
     pin_hash = Column(String(256), nullable=False)
     cvv_hash = Column(String(256), nullable=False)
