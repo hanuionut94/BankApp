@@ -6,8 +6,8 @@ class UsersDepositsController:
         self.users_deposits_ctrl = users_deposits_ctrl
 
     def add_deposits(self, user_id, currency, name, description):
-        amount = 0
-        if self.users_deposits_ctrl.add_deposit(user_id, currency, name, amount, description):
+        # amount = 0
+        if self.users_deposits_ctrl.add_deposit(user_id, currency, name, 0, description):
             return True
         return False
 

@@ -37,7 +37,23 @@ class UsersAccountsController:
         self.users_accounts_repo.create_account(user_id, currency, amount)
 
     def get_user_accounts(self, user_id):
-        return self.users_accounts_repo.get_all_accounts(user_id)
+        users_accounts = self.users_accounts_repo.get_all_accounts(user_id)
+        list_account = []
+        accounts = {}
+        for x in users_accounts:
+            accounts[x.currency] = x.account_number
+            # list_account.append(accounts)
+
+        return accounts
+
+    def get_info_accounts(self, user_id):
+        user_info = self.users_accounts_repo.get_all_accounts(user_id)
+        currencies = [x.currency for x in user_info]
+        accounts = {}
+        for x in user_info:
+            accounts[x.currency]={'account_number': x.account_number, 'amount': x.amount}
+
+        return accounts
 
 if __name__ == '__main__':
     users_accounts_repo = DBUsersAccountsRepository()
@@ -55,11 +71,12 @@ if __name__ == '__main__':
     #     currency='EUR'
     # )
 
-    users_accounts_ctrl.check_balance(
-        user_id=123,
-        amount=100,
-        currency='EUR'
-    )
+    # users_accounts_ctrl.check_balance(
+    #     user_id=123,
+    #     amount=100,
+    #     currency='EUR'
+    # )
 
+    print(users_accounts_ctrl.get_info_accounts(123))
 
 

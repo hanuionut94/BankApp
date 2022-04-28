@@ -22,8 +22,16 @@ class DBUsersCredentialsRepository:
 
     # READ
     def get_credentials(self, user_id):
-        return self.session.query(UsersCredentials).filter_by(
-            user_id=user_id).first()
+        return self.session.query(UsersCredentials).filter_by(user_id=user_id).first()
+
+    def validate_user(self, username, password):
+        response = self.session.query(UsersCredentials).filter_by(username=username, password=password).first()
+        if response:
+            return True
+        return False
+
+    def get_user_id(self, username,password):
+        return self.session.query(UsersCredentials).filter_by(username=username, password=password).first().user_id
 
     # UPDATE
     def update_password(self, user_id, user_password_hash): 
@@ -36,7 +44,7 @@ if __name__ == '__main__':
     users_repo = DBUsersCredentialsRepository()
 
     users_repo.add_credentials(
-        user_id=123,
+        user_id=1234,
         username='ionut',
         user_password_hash='12345'
     )

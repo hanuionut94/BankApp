@@ -2,18 +2,21 @@ from Controller.currencies_ctrl import CurrenciesController
 from Controller.users import UsersController
 from Controller.users_accounts import UsersAccountsController
 from Controller.users_cards import UsersCardsController
+from Controller.users_credentials import UsersCredentialsController
 from Controller.users_deposits_ctrl import UsersDepositsController
 from Controller.users_transactions import UsersTransactionsController
 from Model.Repository.currencies import DBCurrenciesRepository
 from Model.Repository.users import DBUsersRepository
 from Model.Repository.users_accounts import DBUsersAccountsRepository
 from Model.Repository.users_cards import DBUsersCardsRepository
+from Model.Repository.users_credentials import DBUsersCredentialsRepository
 from Model.Repository.users_deposits import DBUsersDepositsRepository
 from Model.Repository.users_transactions import DBUsersTransactionsRepository
 
 
 class AppController:
-    def __init__(self, users_ctrl, users_accounts_ctrl, users_transactions_ctrl, currencies_ctrl, users_deposits_ctrl, users_cards_ctrl):
+    def __init__(self, users_ctrl, users_accounts_ctrl, users_transactions_ctrl, currencies_ctrl, users_deposits_ctrl, users_cards_ctrl, users_credentials_ctrl):
+        self.users_credentials_ctrl = users_credentials_ctrl
         self.users_ctrl = users_ctrl
         self.users_accounts_ctrl = users_accounts_ctrl
         self.users_transactions_ctrl = users_transactions_ctrl
@@ -51,11 +54,20 @@ class AppController:
 
     def update_user(self, user_id, **kwargs):
         a = list(kwargs.keys())
-        if app_ctrl.users_ctrl.verify_user(user_id):
-            if a[0] in ['first_name', 'last_name', 'email_name', 'phone_number', 'address', 'date_of_birth']:
+        for el in a:
+            print(a)
+            print(el)
+            if el in ['first_name', 'last_name', 'email_name', 'phone_number', 'address', 'date_of_birth']:
+                app_ctrl.users_ctrl.verify_user(user_id)
                 self.users_ctrl.update_user(user_id, **kwargs)
                 return True
             return False
+
+        # if app_ctrl.users_ctrl.verify_user(user_id):
+        #     if a[0] in ['first_name', 'last_name', 'email_name', 'phone_number', 'address', 'date_of_birth']:
+        #         self.users_ctrl.update_user(user_id, **kwargs)
+        #         return True
+        #     return False
 
     def create_deposit(self, user_id, currency, name, description):
         if self.currencies_ctrl.check_currency(currency):
@@ -93,12 +105,46 @@ class AppController:
 
     def change_user_credentials(self, user_id, old_password, new_password):
         if self.users_ctrl.verify_user(user_id):
-            self.users_ctrl.change_pin(user_id, old_password, new_password)
+            self.users_credentials_ctrl.change_pin(user_id, old_password, new_password)
 
-    def ge_user_info(self, user_id):
+    def get_user_info(self, user_id):
         user_info = self.users_ctrl.get_user(user_id)
         user_info_account = self.users_accounts_ctrl.get_user_accounts(user_id)
-        return user_info, f'open_accounts": list of accounts {user_info_account}'
+        username_info = self.users_credentials_ctrl.get_username(user_id)
+        data = {
+            'user_id': user_info.user_id,
+            'first_name':user_info.first_name,
+            'last_name':user_info.last_name,
+            'email':user_info.email_name,
+            'address':user_info.address,
+            'phone_number':user_info.phone_number,
+            'join_date':user_info.join_date,
+            'username':username_info.username,
+            'open_accounts': user_info_account
+        }
+
+        return data
+
+    def get_all_user_accounts(self, user_id):
+        info_accounts = self.users_accounts_ctrl.get_info_accounts(user_id)
+        list_currency = [x for x in info_accounts]
+        data = {
+            'available_currencies':list_currency,
+            'accounts':info_accounts
+        }
+        return data
+
+    def login_user(self, username, password):
+        return self.users_credentials_ctrl.check_user_credentials(username, password)
+
+    def exchange(self, user_id, amount, from_currency, to_currency):
+    # Check balance in from_currency
+    if self.
+    # Remove from user balance(from_currency)
+    # Get latest exchange rate from ExchangeRates table and apply it to the amount
+    # Add to user balance(to_currency)
+
+n
 
 
 if __name__ == '__main__':
@@ -108,6 +154,7 @@ if __name__ == '__main__':
     currencies_repo = DBCurrenciesRepository()
     users_deposits_repo = DBUsersDepositsRepository()
     users_cards_repo = DBUsersCardsRepository()
+    users_credentials_repo = DBUsersCredentialsRepository()
 
     users_ctrl = UsersController(users_repo)
     users_accounts_ctrl = UsersAccountsController(users_account_repo)
@@ -115,7 +162,10 @@ if __name__ == '__main__':
     currencies_ctrl = CurrenciesController(currencies_repo)
     users_deposits_ctrl = UsersDepositsController(users_deposits_repo)
     users_cards_ctrl = UsersCardsController(users_cards_repo)
+    users_credentials_ctrl = UsersCredentialsController(users_credentials_repo)
 
-    app_ctrl = AppController(users_ctrl, users_accounts_ctrl, users_transactions_ctrl, currencies_ctrl, users_deposits_ctrl, users_cards_ctrl)
+    app_ctrl = AppController(users_ctrl, users_accounts_ctrl, users_transactions_ctrl, currencies_ctrl, users_deposits_ctrl, users_cards_ctrl, users_credentials_ctrl)
 
-    print(app_ctrl.ge_user_info(1234))
+    print(app_ctrl.get_all_user_accounts(123))
+
+    # app_ctrl.update_user(user_id=1234, last_name= 'manu', address='Popesti')

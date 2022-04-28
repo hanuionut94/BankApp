@@ -1,6 +1,6 @@
 from Model.Domain.users import Users
 from sqlalchemy.orm import sessionmaker
-from datetime import datetime
+from datetime import datetime, date
 
 from Utils.utils import Base, engine
 
@@ -52,15 +52,15 @@ if __name__ == '__main__':
     Base.metadata.create_all(engine)
     user_repo = DBUsersRepository()
 
-    user_repo.add_user(
-        user_id='1234',
-        first_name='Ionescu',
-        last_name='Ion',
-        email_name='ion.ionescu',
-        address='adresa1',
-        phone_number=721461432,
-        date_of_birth='2002-02-10',
-        join_date=datetime.today()
-    )
+    # user_repo.add_user(
+    #     user_id='1234',
+    #     first_name='Ionescu',
+    #     last_name='Ion',
+    #     email_name='ion.ionescu',
+    #     address='adresa1',
+    #     phone_number=721461432,
+    #     date_of_birth='2002-02-10',
+    #     join_date=date.today()
+    # )
 
-    print(user_repo.get_user(1234567890123))
+    user_repo.add_user(123, 'Popescu', 'Eusebiu', 'popescu.eusebiu', 'Braila', 751115123, '1998-09-01', join_date=date.today())

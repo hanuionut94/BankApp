@@ -58,7 +58,7 @@ if __name__ == '__main__':
         amount = 200
     )
 
-    print(repo.get_account('123','EUR').amount)
+    print(repo.get_all_accounts(123))
 
     # repo.update_account(
     #     user_id='123',

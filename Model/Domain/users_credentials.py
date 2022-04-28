@@ -7,7 +7,7 @@ class UsersCredentials(Base):
 
     user_id = Column(String(13), primary_key=True)  # ForeignKey("users.user_id"),
     username = Column(String(30), nullable=False)
-    user_password_hash = Column(String(256), nullable=False)
+    user_password_hash = Column(String(500), nullable=False)
 
     # users = relationship('Users', back_populates='users_credentials')
 
