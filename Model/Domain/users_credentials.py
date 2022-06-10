@@ -1,13 +1,13 @@
-from sqlalchemy import Column, String
+from sqlalchemy import Column, CHAR, VARCHAR
 from Utils.utils import Base
 
 
 class UsersCredentials(Base):
     __tablename__ = 'userscredentials'
 
-    user_id = Column(String(13), primary_key=True)  # ForeignKey("users.user_id"),
-    username = Column(String(30), nullable=False)
-    user_password_hash = Column(String(500), nullable=False)
+    user_id = Column(CHAR(13), primary_key=True)  # ForeignKey("users.user_id"),
+    username = Column(VARCHAR(30), nullable=False)
+    user_password_hash = Column(VARCHAR(500), nullable=False)
 
     # users = relationship('Users', back_populates='users_credentials')
 

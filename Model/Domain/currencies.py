@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String
+from sqlalchemy import Column, CHAR
 from sqlalchemy.orm import sessionmaker, relationship
 
 from Utils.utils import Base, engine
@@ -8,7 +8,7 @@ class Currencies(Base):
 
     __tablename__ = 'currencies'
 
-    currency = Column(String(3), primary_key=True)
+    currency = Column(CHAR(3), primary_key=True)
     # users_transactions = relationship('UsersTransactions', back_populates='currencies')
 
     def __repr__(self):

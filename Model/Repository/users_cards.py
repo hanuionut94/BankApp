@@ -12,7 +12,6 @@ class DBUsersCardsRepository:
 
     def add_card(self, user_id, card_number, pin_hash, cvv_hash, expiration_date):
         def card():
-            # 1 mastercard start with 5, 2-6 bank, 7-15 unique personal identifiers, 16 check digit
             number = str(card_number)
             card1 = 512345 + int(number[4:]) + randint(0, 9)
 
@@ -27,7 +26,6 @@ class DBUsersCardsRepository:
         )
         self.session.add(new_card)
         self.session.commit()
-        # TODO -- 1 card for 1 amount
 
     # Read
     def get_card(self, user_id, card_number):
@@ -51,13 +49,4 @@ if __name__ == '__main__':
     Base.metadata.create_all(engine)
     users_cards_repo = DBUsersCardsRepository()
 
-    print(users_cards_repo.get_card(1234, 568424691)[0].pin_hash)
 
-    # users_cards_repo.add_card(
-    #     user_id=1234,
-    #     card_number=1234567891234,
-    #     pin_hash='12345',
-    #     cvv_hash='730',
-    #     expiration_date=datetime.today()
-    #
-    # )

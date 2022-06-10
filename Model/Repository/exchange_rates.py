@@ -1,44 +1,58 @@
+from urllib import request
+
 import requests
+from sqlalchemy import func
 from sqlalchemy.orm import sessionmaker
+
+from Model.Domain.exchanges_rates import ExchangeRates
 from Utils.utils import engine, Base
-import re
-import xml.etree.ElementTree as ET
+from datetime import date
 
-from bs4 import BeautifulSoup
-import urllib.request
-
-import xmltodict
-
+from Utils.xml import rates_data, rates
 
 
 class DBExchangeRatesRepository:
     def __init__(self):
-        self.session = sessionmaker(engine)
+        self.session = sessionmaker(engine)()
 
-    #READ
-    def get_exhange(self, from_currency, to_currency):
-        return self.session.query(DBExchangeRatesRepository).filter_by(from_currency=from_currency,to_currency=to_currency).first()
+    # READ
+    def get_exhange(self, currency):
+        return self.session.query(DBExchangeRatesRepository).filter_by(currency=currency).first()
 
-    #READ ALL
+    def delete_exchange(self):
+        self.session.query(ExchangeRates).delete()
+        self.session.commit()
+
+    # READ ALL
     def get_all_exchanges(self):
         return self.session.query(DBExchangeRatesRepository)
 
-
     def get_curs(self):
-        url = "https://bnr.ro/Cursurile-pietei-valutare-in-format-XML-3424-Mobile.aspx"
-        html_page = requests.get(url).text
-        soup = BeautifulSoup(html_page, 'html.parser')
-        a = [link.get('href') for link in soup.findAll('a', attrs={'href': re.compile("xrates.xml$")})][0]
-        # val_tag = soup.find_all('')
-        tree = ET.parse(a)
-        root = tree.getroot()
+        def add_exchange():
+            for keys, values in rates().items():
+                exchange_rates = ExchangeRates(
+                    currency=keys,
+                    date_time=rates_data(),
+                    rate=values
+                )
 
-        print(tree)
+                self.session.add(exchange_rates)
+            self.session.commit()
 
-        for child in root:
-            # print(child.tag, child.attrib)
-            print(child.attrib['Cube'])
+        today = date.today()
 
+        result = self.session.query(func.count()).select_from(ExchangeRates).first()
+        print(result[0])
+        if result[0] == 0:
+            add_exchange()
+        if today != rates_data():
+            self.delete_exchange()
+            add_exchange()
+
+    def from_currency_to(self, from_currency, amount, to_currency):
+        from_currency = self.session.query(ExchangeRates).filter_by(currency=from_currency).first().rate
+        to_currency = self.session.query(ExchangeRates).filter_by(currency=to_currency).first().rate
+        return ((from_currency * amount) / to_currency).__format__(".4f")
 
 
 if __name__ == '__main__':
@@ -46,4 +60,5 @@ if __name__ == '__main__':
     exchannge_rates_repo = DBExchangeRatesRepository()
 
     print(exchannge_rates_repo.get_curs())
-
+    # print(exchannge_rates_repo.from_currency_to('EUR', 10, 'USD'))
+    # exchannge_rates_repo.delete_exchange()

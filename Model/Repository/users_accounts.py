@@ -51,17 +51,3 @@ class DBUsersAccountsRepository:
 if __name__ == '__main__':
     Base.metadata.create_all(engine)
     repo = DBUsersAccountsRepository()
-
-    repo.update_account(
-        user_id=123,
-        currency='EUR',
-        amount = 200
-    )
-
-    print(repo.get_all_accounts(123))
-
-    # repo.update_account(
-    #     user_id='123',
-    #     currency='USD',
-    #     amount='1234',
-    # )

@@ -144,7 +144,7 @@ class AppController:
     # Get latest exchange rate from ExchangeRates table and apply it to the amount
     # Add to user balance(to_currency)
 
-n
+
 
 
 if __name__ == '__main__':

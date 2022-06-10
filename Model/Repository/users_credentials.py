@@ -18,8 +18,6 @@ class DBUsersCredentialsRepository:
         self.session.add(credentials)
         self.session.commit()
 
-        #todo -- 1 account
-
     # READ
     def get_credentials(self, user_id):
         return self.session.query(UsersCredentials).filter_by(user_id=user_id).first()
@@ -42,9 +40,3 @@ class DBUsersCredentialsRepository:
 if __name__ == '__main__':
     Base.metadata.create_all(engine)
     users_repo = DBUsersCredentialsRepository()
-
-    users_repo.add_credentials(
-        user_id=1234,
-        username='ionut',
-        user_password_hash='12345'
-    )

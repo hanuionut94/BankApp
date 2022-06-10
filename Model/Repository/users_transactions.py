@@ -39,27 +39,3 @@ if __name__ == '__main__':
     Base.metadata.create_all(engine)
     depo_repo = DBUsersTransactionsRepository()
 
-    depo_repo.create_transactions(
-        transaction_id=123,
-        user_id='1234',
-        currency='EUR',
-        amount=100,
-        vendor='Altex',
-        date_time='2022-01-02'
-    )
-    depo_repo.create_transactions(
-        transaction_id=124,
-        user_id='1235',
-        currency='EUR',
-        amount= 50,
-        vendor='EMAG',
-        date_time='2022-04-02'
-    )
-    depo_repo.create_transactions(
-        transaction_id=125,
-        user_id='1234',
-        currency='USD',
-        amount=10,
-        vendor='EMAG',
-        date_time='2022-03-02'
-    )

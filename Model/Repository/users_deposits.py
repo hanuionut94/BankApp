@@ -53,4 +53,3 @@ if __name__ == '__main__':
     Base.metadata.create_all(engine)
     repo = DBUsersDepositsRepository()
 
-    print(repo.get_deposit_currency_name(123,'EUR', 'Primul depozit'))

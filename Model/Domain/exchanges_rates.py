@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Float, String
+from sqlalchemy import Column, Integer, Float, CHAR
 from datetime import datetime
 
 from Utils.utils import Base
@@ -9,8 +9,7 @@ class ExchangeRates(Base):
     __tablename__ = 'exchangerates'
 
     id = Column(Integer, primary_key=True)
-    from_currency = Column(String(3), nullable=False)
-    to_currency = Column(String(3), nullable=False)
-    date_time = Column(datetime, nullable=False)
+    currency = Column(CHAR(3), nullable=False)
+    date_time = Column(CHAR(20), nullable=False)
     rate = Column(Float, nullable=False)
 

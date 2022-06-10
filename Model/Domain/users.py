@@ -1,26 +1,17 @@
-from sqlalchemy import Column, String
+from sqlalchemy import Column, CHAR, VARCHAR
 from sqlalchemy.types import Date, DateTime
-from sqlalchemy.orm import relationship
-from Model.Domain.users_credentials import UsersCredentials
-from Model.Domain.users_deposits import UsersDeposits
-from Model.Domain.users_cards import UsersCards
-from Model.Domain.users_transactions import UsersTransactions
-
-from Model.Domain.currencies import Currencies
-
-
 from Utils.utils import Base
 
 
 class Users(Base):
     __tablename__ = 'users'
 
-    user_id = Column(String(13), primary_key=True)
-    first_name = Column(String(30), nullable=False)
-    last_name = Column(String(30), nullable=False)
-    email_name = Column(String(50), nullable=False)
-    address = Column(String(50), nullable=False)
-    phone_number = Column(String(10), nullable=False)
+    user_id = Column(CHAR(13), primary_key=True)
+    first_name = Column(VARCHAR(30), nullable=False)
+    last_name = Column(VARCHAR(30), nullable=False)
+    email_name = Column(VARCHAR(50), nullable=False)
+    address = Column(VARCHAR(50), nullable=False)
+    phone_number = Column(CHAR(10), nullable=False)
     date_of_birth = Column(Date, nullable=False)
     join_date = Column(DateTime, nullable=False)
     # users_deposits = relationship('UsersDeposits', back_populates='users')
