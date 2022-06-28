@@ -1,0 +1,38 @@
+li{
+    display: inline;
+}
+
+.upbox{
+    margin-left: auto;
+    margin-right: auto;
+    height: 100px;
+    background-color:#aaa;
+
+}
+
+.logo{
+    width: 150px;
+    margin-left: 400px;
+}
+
+.buttonbox{
+    background-color: #4CAF50;
+    padding: 20px;
+    position: relative;
+    margin-top: 10px;
+
+}
+
+/* .cornerright{
+    float: right;
+    color:aqua;
+    margin-top:50px;
+    margin-right: auto;
+    margin-left: auto;
+} */
+
+.container-name div { 
+    display: inline-block; 
+    margin-right: 400px;
+    margin-left: 400px;
+  } 
