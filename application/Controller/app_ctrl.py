@@ -14,9 +14,13 @@ from application.Model.Repository.users_deposits import DBUsersDepositsRepositor
 from application.Model.Repository.users_transactions import DBUsersTransactionsRepository
 
 
+
+
+
+
 class AppController:
-    def __init__(self, users_ctrl, users_accounts_ctrl, users_transactions_ctrl, currencies_ctrl, users_deposits_ctrl, users_cards_ctrl, users_credentials_ctrl):
-        self.users_credentials_ctrl = users_credentials_ctrl
+    def __init__(self, users_ctrl, users_accounts_ctrl, users_transactions_ctrl, currencies_ctrl, users_deposits_ctrl, users_cards_ctrl, user_credentials_ctrl):
+        self.users_credential_ctrl = user_credentials_ctrl
         self.users_ctrl = users_ctrl
         self.users_accounts_ctrl = users_accounts_ctrl
         self.users_transactions_ctrl = users_transactions_ctrl
@@ -39,8 +43,7 @@ class AppController:
             print('Currency not exist!')
 
     def create_account(self, user_id, currency):
-        if self.currencies_ctrl.check_currency(currency) and not self.users_accounts_ctrl.check_currency(user_id,
-                                                                                                         currency):
+        if self.currencies_ctrl.check_currency(currency) and not self.users_accounts_ctrl.check_currency(user_id, currency):
             self.users_accounts_ctrl.create_account(user_id, currency)
             return True
         return False
@@ -136,6 +139,17 @@ class AppController:
 
     def login_user(self, username, password):
         return self.users_credentials_ctrl.check_user_credentials(username, password)
+
+    def register_user(self, user_id, first_name, last_name, email, address, phone_number, date_of_birth, join_date, username, password):
+        self.users_ctrl.create_user(user_id, first_name, last_name, email, address, phone_number, date_of_birth, join_date)
+        self.users_credentials_ctrl(username, password)
+
+    def get_username(self, username):
+        return self.user_credentials_ctrl.get_username(username)
+
+    def get_user(self, user_id):
+        return self.users_ctrl.get_user(user_id)
+        
 
     # def exchange(self, user_id, amount, from_currency, to_currency):
     # Check balance in from_currency

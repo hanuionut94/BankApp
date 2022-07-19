@@ -1,5 +1,5 @@
 from application.Model.Repository.users_cards import DBUsersCardsRepository
-from application.Utils.utils import hash_pin
+from application.Utils.utils import HashPin
 
 
 class UsersCardsController:
@@ -8,7 +8,7 @@ class UsersCardsController:
 
     def check_pin(self, user_id, card_number, old_pin, new_pin):
         pin = self.users_cards_ctrl.get_card(user_id, card_number).pin_hash
-        old_pin = hash_pin(old_pin)
+        old_pin = HashPin.hash_pin(old_pin)
         if pin == old_pin:
             self.users_cards_ctrl.update_card(user_id, card_number, new_pin)
             print('Pin changed successfully!')

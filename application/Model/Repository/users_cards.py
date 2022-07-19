@@ -3,7 +3,7 @@ from application.Model.Domain.users_cards import UsersCards
 from sqlalchemy.orm import sessionmaker
 from random import randint
 
-from application.Utils.utils import Base, engine, hash_pin
+from application.Utils.utils import Base, engine, HashPin
 
 
 class DBUsersCardsRepository:
@@ -20,8 +20,8 @@ class DBUsersCardsRepository:
         new_card = UsersCards(
             user_id=user_id,
             card_number=card(),
-            pin_hash=hash_pin(pin_hash),
-            cvv_hash=hash_pin(cvv_hash),
+            pin_hash=HashPin.hash_pin(pin_hash),
+            cvv_hash=HashPin.hash_pin(cvv_hash),
             expiration_date=expiration_date  # +3 years
         )
         self.session.add(new_card)

@@ -5,7 +5,7 @@ from application.Utils.utils import Base
 class UsersCredentials(Base):
     __tablename__ = 'userscredentials'
 
-    user_id = Column(CHAR(13), primary_key=True)  # ForeignKey("users.user_id"),
+    user_id = Column(CHAR(13), primary_key=True, autoincrement=True)  # ForeignKey("users.user_id"),
     username = Column(VARCHAR(30), nullable=False)
     user_password_hash = Column(VARCHAR(500), nullable=False)
 

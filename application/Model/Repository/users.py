@@ -6,10 +6,11 @@ from application.Utils.utils import Base, engine
 
 class DBUsersRepository:
     def __init__(self):
-
+        
         self.session = sessionmaker(engine)()
+
     # Create new user
-    def add_user(self, user_id, first_name, last_name, email_name, phone_number, address, date_of_birth, join_date):
+    def create_user(self, user_id, first_name, last_name, email_name, phone_number, address, date_of_birth, join_date):
         new_user = Users(
             user_id=user_id,
             first_name=first_name,

@@ -1,5 +1,5 @@
 from application.Model.Domain.users_credentials import UsersCredentials
-from application.Utils.utils import engine, hash_pin, Base
+from application.Utils.utils import engine, Base, HashPin
 from sqlalchemy.orm import sessionmaker
 
 
@@ -12,7 +12,7 @@ class DBUsersCredentialsRepository:
         credentials = UsersCredentials(
             user_id=user_id,
             username=username,
-            user_password_hash=hash_pin(user_password_hash)
+            user_password_hash=HashPin.hash_pin(user_password_hash)
         )
 
         self.session.add(credentials)
@@ -30,6 +30,9 @@ class DBUsersCredentialsRepository:
 
     def get_user_id(self, username,password):
         return self.session.query(UsersCredentials).filter_by(username=username, password=password).first().user_id
+
+    def get_username(self, username):
+        return self.session(UsersCredentials).filter_by(username=username).first()
 
     # UPDATE
     def update_password(self, user_id, user_password_hash): 

@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block content %}
+<body>
+<nav class="container-name div">
+   
+    <li><button class="buttonbox">Home</button></li>
+    <li><button class="buttonbox">Login</button></li>
+    <li><button class="buttonbox"><a href="{{url_for('register')}}">Register</a></button></li>
+</nav>
+</body>
+{% endblock %}
